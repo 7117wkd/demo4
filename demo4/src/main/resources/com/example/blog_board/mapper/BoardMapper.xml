@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.blog_board.mapper.BoardMapper">
+
+    <select id="boardCount" resultType="int">
+        select count(boardId) as cnt
+        from tbl_board;
+    </select>
+
+    <select id="getList" parameterType="com.example.blog_board.domain.Board"
+            resultType="com.example.blog_board.domain.Board">
+        select *
+        from tbl_board
+        where boardId between #{start} and #{finish}
+        order by boardId asc limit 10
+    </select>
+
+    <select id="getBoard" parameterType="int" resultType="com.example.blog_board.domain.Board">
+        select *
+        from tbl_board
+        where boardId = #{boardId};
+    </select>
+
+    <insert id="uploadBoard" parameterType="com.example.blog_board.domain.Board">
+        insert into tbl_board (title, content, name)
+        values (#{title}, #{content}, #{name})
+    </insert>
+
+    <update id="updateBoard" parameterType="com.example.blog_board.domain.Board">
+        update tbl_board
+        set title  = #{title},
+            content=#{content}
+        where boardId = #{boardId}
+    </update>
+
+    <delete id="deleteBoard" parameterType="int">
+        delete
+        from tbl_board
+        where boardId = #{boardId};
+    </delete>
+
+    <update id="increasementCount" parameterType="com.example.blog_board.domain.Board">
+        update tbl_board
+        set count = count + 1
+        where boardId = #{boardId}
+    </update>
+
+    <insert id="writeBoard" parameterType="com.example.blog_board.domain.Board">
+        insert into tbl_board (title, content, name)
+        values (#{title}, #{content}, #{name})
+    </insert>
+
+    <select id="getCount" resultType="int">
+        select count(*)
+        from tbl_board;
+    </select>
+
+    <select id="getBoardList" parameterType="int" resultType="com.example.blog_board.domain.Board">
+        select *
+        from tbl_board
+        where boardId > #{startIndex}
+        order by boardId asc limit #{pageSize}
+    </select>
+
+    <insert id="writeComment" parameterType="String">
+        insert into comment
+        values (cast(#{boardId} as unsigned), #{comment}, now())
+    </insert>
+
+    <select id="getComment" parameterType="int" resultType="com.example.blog_board.domain.Board">
+        select *
+        from comment
+        where boardId = #{boardId}
+    </select>
+
+    <select id="getUserAccount" resultType="com.example.blog_board.domain.User">
+        SELECT *
+        FROM TB_USER
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <!-- 회원가입 -->
+    <insert id="saveUser" parameterType="com.example.blog_board.domain.User">
+        INSERT INTO TB_USER
+            (USER_ID, USER_PW, USER_NAME, USER_AUTH, APPEND_DATE, UPDATE_DATE)
+        VALUES (#{userId}, #{userPw}, #{userName}, #{userAuth}, #{appendDate}, #{updateDate});
+    </insert>
+</mapper>

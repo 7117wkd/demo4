@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns xmlns:th="http://www.w3.org/1999/xhtml" : th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+
+    <script src="js/vendor/modernizr-3.8.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script>window.jQuery || document.write('<script src="@{/js/vendor/jquery-3.4.1.min.js}"><\/script>')</script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container" style="margin-top: 5%">
+    <p>글번호 : [[${view.boardId}]]</p>
+    <p id="title">제목 : [[${view.title}]]</p>
+    <p>작성자 : [[${view.name}]]</p>
+    내용 :
+    <div id="content" style="margin-bottom: 1%;">
+        <textares readonly="readonly" class="form-control" rows="5" th:text="${view.content}"></textares>
+    </div>
+
+    <button id="goList" style="margin-left: 5px;" class="btn btn-secondary btn-sm float-right">목록</button>
+    <button id="deleteBtn" style="margin-left: 5px;" class="btn btn-danger btn-sm float-right">삭제</button>
+    <button id="updateBtn" class="btn btn-info btn-sm float-right">수정</button>
+
+    <form id="form" th:action="@{/}" method="post"></form>
+</div>
+<div class="form-group" style="margin-left: 20%; margin-right: 20%; margin-top: 4%;">
+    <label for="comment">Comment:</label>
+    <textarea class="form-control" rows="5" id="comment" style="" ></textarea>
+    <button id="enrollComment" class="btn btn-info btn-sm float-right">등록</button>
+
+    <!-- 댓글 테이블-->
+    <div class="container">
+        <table class="table" style="text-align: center;">
+            <colgroup>
+                <col width="80%">
+                <col width="20%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th scope="col">contents</th>
+                <th scope="col">time</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="contents :${contents}">
+                <td>[[${contents.comment}]]</td>
+                <td>[[${contents.time}]]</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
+
+<script th:inline="javascript">
+    $(document).on('ready', function (e) {
+        var form = $("#form");
+        var boardId = [[${view.boardId}]];
+        //삭제 버튼
+        $(document).on('click', '#deleteBtn', function (e) {
+            if (confirm('정말 삭제하시겠습니까?? 복구할수 없습니다.')) {
+                $('#form').attr("action", "delete");
+                form.append("<input type='hidden' name='boardId' value='" + boardId + "'>");
+                form.append("<input type='hidden' name='_method' value='delete'>");
+                form.submit();
+            } else {
+                return;
+            }
+        })
+        //목록 버튼
+        $(document).on('click', '#goList', function (e) {
+            $('#form').attr("method", "get");
+            $('#form').attr("action", "main");
+            form.submit();
+        })
+        $(document).on('click', '#updateBtn', function (e) {
+            var str = "<input class = 'form-control' width='250'" +
+                "placeholder='제목 입력' id='updateTitle'>";
+            $("#title").html(str);
+            str = "<textarea class='form=control' placeholder='내용 입력'" +
+                "id='updateContent'></textarea>";
+            $("#content").html(str);
+            $("#updateBtn").attr("id", "updateConfirmBtn");
+        })
+
+        $(document).on('click', '#updateConfirmBtn', function (e) {
+            $('#form').attr("action", "update");
+            var updateTitle = $('#updateTitle').val();
+            var updateContent = $('#updateContent').val();
+            form.append("<input type='hidden' name='boardId' value='" + boardId + "'>");
+            form.append("<input type='hidden' name='_method' value='put'>");
+            form.append("<input type='hidden' name='title' value='" + updateTitle + "'>");
+            form.append("<input type='hidden' name='content' value='" + updateContent + "'>");
+            form.submit();
+        })
+
+        //Comment 남기기
+        $(document).on('click', '#enrollComment', function (e) {
+            $.ajax({
+                url: "comment",
+                type: "POST",
+                cache: false,
+                dataType: "json",
+                data: {comment: $('#comment').val(), boardId: boardId},
+                success: function (data) {
+                    if(data == 1) {
+                        location.reload();
+                    }
+                },
+
+                error: function (request, status, error) {
+
+                }
+            });
+        })
+    })
+</script>
