@@ -35,6 +35,9 @@ dependencies {
     //스프링 시큐리티 관련
 //    implementation 'org.springframework.boot:spring-boot-starter-security'
 //    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+
+    //WebSocket를 이용한 실시간 채팅구현
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
 tasks.named('test') {
