@@ -73,4 +73,5 @@
         from comment
         where boardId = #{boardId}
     </select>
+
 </mapper>

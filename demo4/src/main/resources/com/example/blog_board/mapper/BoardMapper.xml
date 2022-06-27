@@ -74,16 +74,4 @@
         where boardId = #{boardId}
     </select>
 
-    <select id="getUserAccount" resultType="com.example.blog_board.domain.User">
-        SELECT *
-        FROM TB_USER
-        WHERE USER_ID = #{userId}
-    </select>
-
-    <!-- 회원가입 -->
-    <insert id="saveUser" parameterType="com.example.blog_board.domain.User">
-        INSERT INTO TB_USER
-            (USER_ID, USER_PW, USER_NAME, USER_AUTH, APPEND_DATE, UPDATE_DATE)
-        VALUES (#{userId}, #{userPw}, #{userName}, #{userAuth}, #{appendDate}, #{updateDate});
-    </insert>
 </mapper>

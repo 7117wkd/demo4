@@ -1,7 +1,6 @@
 package com.example.blog_board.mapper;
 
 import com.example.blog_board.domain.Board;
-import com.example.blog_board.domain.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,10 +30,4 @@ public interface BoardMapper {
     int writeComment(String comment, String boardId);
 
     List<Board> getComment(int boardId);
-
-    // 로그인
-    User getUserAccount(String userId);
-
-    // 회원가입
-    void saveUser(User userVo);
 }

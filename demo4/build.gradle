@@ -33,8 +33,8 @@ dependencies {
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.29'
 
     //스프링 시큐리티 관련
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
+//    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 }
 
 tasks.named('test') {
